@@ -12,6 +12,12 @@ const keys = account.NewKeys(seed)
 const sk = keys.sk.toString('hex')
 console.log(sk)
 
+const tk = keys.tk.toString('hex')
+console.log(tk)
+
+const pk = keys.pk.toString('hex')
+console.log(pk)
+
 tx.SignTx(
   txParamStr,
   keys.sk.toString('hex'),
