@@ -35,7 +35,7 @@ function BinPath (type) {
     ldPath = 'PATH'
     txName = 'tx.exe'
   } else if (type.toLowerCase() === 'linux3') {
-    tail = 'WINDOWS_AMD64_V3'
+    tail = 'LINUX_AMD64_V3'
   } else if (type.toLowerCase() === 'darwin') {
     czeroName = 'libczero.dylib'
     tail = 'DARWIN_AMD64'
