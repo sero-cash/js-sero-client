@@ -17,7 +17,11 @@ function SignTx (tx, sk, callback) {
     CmdStr(tx, sk),
     (err, data) => {
       if (err) {
-        callback(err)
+        if (err.code === 127) {
+          callback(new Error("cann't find the tx file"))
+        } else {
+          console.error(new Error('error code is: ' + err.code))
+        }
       } else {
         var start = data.indexOf(OUTPUT_BEGIN)
         if (start <= 0) {
