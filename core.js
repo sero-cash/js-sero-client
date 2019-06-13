@@ -25,7 +25,7 @@ function NewBytesBuffer (len) {
 
 function NewBytesBufferFromBase58 (str) {
   var bufDec = base58.decode(str)
-  var buf = Buffer.alloc(bufDec.length,bufDec)
+  var buf = Buffer.alloc(bufDec.length, bufDec)
   buf.type = cBytes
   buf.ToBase58 = function () {
     return base58.encode(buf)
