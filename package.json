@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "standard",
     "test account": "node test/test_account.js",
-    "test tx": "node test/test_tx.js",
+    "test tx": "node test/test_tx.js"
   },
   "husky": {
     "hooks": {
