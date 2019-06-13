@@ -5,14 +5,13 @@
   "main": "index.js",
   "files": [
     "*.js",
-    "src/test/",
-    "src/tools/"
+    "test/",
+    "tools/"
   ],
   "scripts": {
     "lint": "standard",
-    "test account": "node src/test/test_account.js",
-    "test tx": "node src/test/test_tx.js",
-    "build:dist": "babel src/ -d ."
+    "test account": "node test/test_account.js",
+    "test tx": "node test/test_tx.js",
   },
   "husky": {
     "hooks": {
