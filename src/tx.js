@@ -7,7 +7,7 @@ const OUTPUT_BEGIN = '[OUTPUT-BEGIN]'
 const OUTPUT_END = '[OUTPUT-END]'
 
 function CmdStr (tx, sk) {
-  return `export ${utils.GetBinPath().ld_path}="${utils.GetBinPath().libczero_dir}:$${utils.GetBinPath().ld_path}"
+  return `export ${utils.GetBinPath().ld_path}="${utils.GetBinPath().lib_dir}:$${utils.GetBinPath().ld_path}"
 ${utils.GetBinPath().tx_sign_dir} -tx '${tx}' -sk '${sk}'
 `
 }

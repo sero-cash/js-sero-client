@@ -42,7 +42,8 @@ function BinPath (type) {
     ldPath = 'DYLD_LIBRARY_PATH'
   }
   var self = {}
-  self.libczero_dir = path.resolve(__dirname, baseDir + '/lib_' + tail + '/' + czeroName)
+  self.lib_dir = path.resolve(__dirname, baseDir + '/lib_' + tail)
+  self.libczero_dir = path.resolve(self.lib_dir, czeroName)
   self.tx_sign_dir = path.resolve(__dirname, baseDir + '/lib_' + tail + '/' + txName)
   self.ld_path = ldPath
   return self
