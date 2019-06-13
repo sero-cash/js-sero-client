@@ -3,7 +3,7 @@
 const ffi = require('ffi')
 const ref = require('ref')
 const utils = require('./utils.js')
-const cs = require('coinstring')
+const base58 = require('bs58')
 
 function ReportError (msg) {
   throw new Error(msg || 'Assertion failed')
@@ -18,16 +18,16 @@ function NewBytesBuffer (len) {
   var buf = Buffer.alloc(len)
   buf.type = cBytes
   buf.ToBase58 = function () {
-    return cs.encode(buf)
+    return base58.encode(buf)
   }
   return buf
 }
 
 function NewBytesBufferFromBase58 (str) {
-  var buf = cs.decode(str)
+  var buf = base58.decode(str)
   buf.type = cBytes
   buf.ToBase58 = function () {
-    return cs.encode(buf)
+    return base58.encode(buf)
   }
   return buf
 }

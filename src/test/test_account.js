@@ -3,14 +3,23 @@
 const core = require('../core.js')
 const account = require('../account.js')
 
-var seed = core.GetCZero().RandomU32()
+// var seed = core.GetCZero().RandomU32()
+var seed = Buffer.alloc(32,'ec8bad429641ff7cc980a1bd4f69a57302f53b35941edf3cc459640b1ab03d1f','hex')
 var rnd = core.GetCZero().RandomU32()
 
 var keys = account.NewKeys(seed)
 var pkr = keys.GenPKr(rnd)
 
-console.log('PKR-HEX: ' + pkr.toString('hex'))
+console.log('SEED-HEX: ' + keys.seed.toString('hex'))
+console.log('SK-HEX: ' + keys.sk.toString('hex'))
 
+console.log('TK-HEX: ' + keys.tk.toString('hex'))
+console.log('TK-BASE58: ' + keys.tk.ToBase58())
+
+console.log('PK-HEX: ' + keys.pk.toString('hex'))
+console.log('PK-BASE58: ' + keys.pk.ToBase58())
+
+console.log('PKR-HEX: ' + pkr.toString('hex'))
 console.log('PKR-BASE58: ' + pkr.ToBase58())
 
 if (!keys.IsValidPKr(pkr)) {

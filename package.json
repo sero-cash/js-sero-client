@@ -35,6 +35,7 @@
   },
   "homepage": "",
   "dependencies": {
+    "bs58": "^4.0.1",
     "coinstring": "^2.3.0",
     "ffi": "^2.3.0",
     "fibers": "^4.0.1",
