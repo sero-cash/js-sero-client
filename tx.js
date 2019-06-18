@@ -1,45 +1,65 @@
 'use strict'
 
-const cmd = require('node-cmd')
 const utils = require('./utils.js')
+const cp = require('child_process')
 
 const OUTPUT_BEGIN = '[OUTPUT-BEGIN]'
-const OUTPUT_END = '[OUTPUT-END]'
-
-function CmdStr (tx, sk) {
-  return `export ${utils.GetBinPath().ld_path}="${utils.GetBinPath().lib_dir}:$${utils.GetBinPath().ld_path}"
-${utils.GetBinPath().tx_sign_dir} -tx '${tx}' -sk '${sk}'
-`
-}
 
 function SignTx (tx, sk, callback) {
-  cmd.get(
-    CmdStr(tx, sk),
-    (err, data) => {
-      if (err) {
-        if (err.code === 127) {
-          callback(new Error("cann't find the tx file"))
-        } else {
-          console.error(new Error('error code is: ' + err.code))
+  let env = {}
+  let content = ''
+  let isReturned = false
+  let isWrited = false
+  let p = utils.GetBinPath()
+  env[p.ld_path] = p.lib_dir
+  let sub = cp.execFile(
+    utils.GetBinPath().tx_sign_dir,
+    { env: env }
+  )
+  function Return (err, data) {
+    if (isReturned) {
+      return
+    } else {
+      isReturned = true
+    }
+    callback(err, data)
+  }
+  sub.stdout.on('data', (data) => {
+    if (!isWrited) {
+      if (sub.stdin.write(sk + '\n' + tx + '\n', (err) => {
+        if (err) {
+          Return(err, undefined)
         }
+      })) {
+        isWrited = true
+      }
+    }
+    content += data
+  })
+  sub.stderr.on('data', (data) => {
+  })
+  sub.on('error', (err) => {
+    Return(err, undefined)
+  })
+  sub.on('exit', (code) => {
+    if (code !== 0) {
+      Return(new Error('Exit Code: ' + code), undefined)
+    } else {
+      var start = content.indexOf(OUTPUT_BEGIN)
+      if (start <= 0) {
+        Return(new Error('Can not find [OUTPUT-BEGIN]'), undefined)
       } else {
-        var start = data.indexOf(OUTPUT_BEGIN)
-        if (start <= 0) {
-          callback(new Error('Can not find [OUTPUT-BEGIN]'), undefined)
+        start += OUTPUT_BEGIN.length + 1
+        var end = content.indexOf('\n', start)
+        if (end <= 0) {
+          Return(new Error('Can not find [OUTPUT-END]'), undefined)
         } else {
-          start += OUTPUT_BEGIN.length + 1
-          var end = data.indexOf(OUTPUT_END, start)
-          if (end <= 0) {
-            callback(new Error('Can not find [OUTPUT-END]'), undefined)
-          } else {
-            end = end - 1
-            var content = data.substr(start, end - start)
-            callback(undefined, content)
-          }
+          var data = content.substr(start, end - start)
+          Return(undefined, data)
         }
       }
     }
-  )
+  })
 }
 
 module.exports = {

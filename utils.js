@@ -29,11 +29,13 @@ function BinPath (type) {
   let tail = 'LINUX_AMD64_V4'
   let ldPath = 'LD_LIBRARY_PATH'
   let txName = 'tx'
+  let split = ':'
   if (type.toLowerCase() === 'windows') {
     czeroName = 'libczero.dll'
     tail = 'WINDOWS_AMD64'
     ldPath = 'PATH'
     txName = 'tx.exe'
+    split = ';'
   } else if (type.toLowerCase() === 'linux3') {
     tail = 'LINUX_AMD64_V3'
   } else if (type.toLowerCase() === 'darwin') {
@@ -46,6 +48,7 @@ function BinPath (type) {
   self.libczero_dir = path.resolve(self.lib_dir, czeroName)
   self.tx_sign_dir = path.resolve(__dirname, baseDir + '/lib_' + tail + '/' + txName)
   self.ld_path = ldPath
+  self.split = split
   return self
 }
 
