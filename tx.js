@@ -26,13 +26,12 @@ function SignTx (tx, sk, callback) {
   }
   sub.stdout.on('data', (data) => {
     if (!isWrited) {
-      if (sub.stdin.write(sk + '\n' + tx + '\n', (err) => {
+      isWrited = true
+      sub.stdin.write(sk + '\n' + tx + '\n', (err) => {
         if (err) {
           Return(err, undefined)
         }
-      })) {
-        isWrited = true
-      }
+      })
     }
     content += data
   })
