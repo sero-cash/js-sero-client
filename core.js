@@ -15,21 +15,15 @@ const cChar = ref.types.char
 const cBytes = ref.refType(cUchar)
 
 function NewBytesBuffer (len) {
-  var buf = Buffer.alloc(len)
+  var buf = utils.AllocBuffer(len)
   buf.type = cBytes
-  buf.ToBase58 = function () {
-    return base58.encode(buf)
-  }
   return buf
 }
 
 function NewBytesBufferFromBase58 (str) {
   var bufDec = base58.decode(str)
-  var buf = Buffer.alloc(bufDec.length, bufDec)
+  var buf = utils.AllocBuffer(bufDec.length, bufDec)
   buf.type = cBytes
-  buf.ToBase58 = function () {
-    return base58.encode(buf)
-  }
   return buf
 }
 

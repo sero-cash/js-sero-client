@@ -1,10 +1,12 @@
 'use strict'
 
 const core = require('../core.js')
+const utils = require('../utils.js')
 const account = require('../account.js')
 
-// var seed = core.GetCZero().RandomU32()
-var seed = Buffer.alloc(32,'ec8bad429641ff7cc980a1bd4f69a57302f53b35941edf3cc459640b1ab03d1f','hex')
+var seedTemp = '0xec8bad429641ff7cc980a1bd4f69a57302f53b35941edf3cc459640b1ab03d1f'
+
+var seed = utils.ToBuffer(seedTemp, 32)
 var rnd = core.GetCZero().RandomU32()
 
 var keys = account.NewKeys(seed)
