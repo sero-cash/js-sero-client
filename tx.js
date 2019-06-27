@@ -6,7 +6,7 @@ const cp = require('child_process')
 const OUTPUT_BEGIN = '[OUTPUT-BEGIN]'
 
 function SignTx (tx, sk, callback) {
-  sk = utils.ToHex(sk,64)
+  sk = utils.ToHex(sk, 64)
   let env = {}
   let content = ''
   let isReturned = false
