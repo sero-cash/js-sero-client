@@ -1,6 +1,6 @@
 {
   "name": "js-sero-client",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Utilities for handling SERO client",
   "main": "index.js",
   "files": [
@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "standard",
     "test account": "node test/test_account.js",
-    "test tx": "node test/test_tx.js"
+    "test tx": "node test/test_signtx.js"
   },
   "husky": {
     "hooks": {

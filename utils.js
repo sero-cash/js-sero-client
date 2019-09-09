@@ -101,11 +101,39 @@ function ReportError (msg) {
   throw new Error(msg || 'Assertion failed')
 }
 
+const OUTPUT_BEGIN = '[OUTPUT-BEGIN]'
+const OUTPUT_ERROR = 'ERROR:'
+
+function ParseResult (content, cb) {
+  var start = content.indexOf(OUTPUT_BEGIN)
+  if (start <= 0) {
+    cb(new Error('Can not find [OUTPUT-BEGIN]'), undefined)
+  } else {
+    start += OUTPUT_BEGIN.length + 1
+    if (content.indexOf(OUTPUT_ERROR, start) === start) {
+      start += OUTPUT_ERROR.length + 1
+      var data = content.substr(start, content.length - start)
+      cb(new Error(data), undefined)
+    } else {
+      var end = content.indexOf('\n', start)
+      if (end <= 0) {
+        cb(new Error('Can not find [OUTPUT-END]'), undefined)
+      } else {
+        var data = content.substr(start, end - start)
+        cb(undefined, data)
+      }
+    }
+  }
+}
+
+
+
 module.exports = {
   GetBinPath: () => {
     return binPath
   },
   AllocBuffer,
   ToBuffer,
-  ToHex
+  ToHex,
+  ParseResult
 }
