@@ -95,7 +95,53 @@ function DecOut (out, tk, callback) {
   })
 }
 
+function ConfirmOutZ (out, key, callback) {
+  let env = {}
+  let content = ''
+  let isReturned = false
+  let isWrited = false
+  let p = utils.GetBinPath()
+  env[p.ld_path] = p.lib_dir
+  let sub = cp.execFile(
+    utils.GetBinPath().tx_sign_dir,
+    ['--method', 'confirm'],
+    { env: env }
+  )
+  function Return (err, data) {
+    if (isReturned) {
+      return
+    } else {
+      isReturned = true
+    }
+    callback(err, data)
+  }
+  sub.stdout.on('data', (data) => {
+    if (!isWrited) {
+      isWrited = true
+      sub.stdin.write ( key + '\n' + out + '\n', (err) => {
+        if (err) {
+          Return(err, undefined)
+        }
+      })
+    }
+    content += data
+  })
+  sub.stderr.on('data', (data) => {
+  })
+  sub.on('error', (err) => {
+    Return(err, undefined)
+  })
+  sub.on('exit', (code) => {
+    if (code !== 0) {
+      Return(new Error('Exit Code: ' + code), undefined)
+    } else {
+      utils.ParseResult(content, Return)
+    }
+  })
+}
+
 module.exports = {
   SignTx,
-  DecOut
+  DecOut,
+  ConfirmOutZ
 }
