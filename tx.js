@@ -29,7 +29,7 @@ function SignTx (tx, sk, callback) {
       isWrited = true
       sub.stdin.write(sk + '\n' + tx + '\n', (err) => {
         if (err) {
-          Return(err, undefined)
+          Return(err, content)
         }
       })
     }
@@ -38,11 +38,11 @@ function SignTx (tx, sk, callback) {
   sub.stderr.on('data', (data) => {
   })
   sub.on('error', (err) => {
-    Return(err, undefined)
+    Return(err, content)
   })
   sub.on('exit', (code) => {
     if (code !== 0) {
-      Return(new Error('Exit Code: ' + code), undefined)
+      Return(new Error('Exit Code: ' + code), content)
     } else {
       utils.ParseResult(content, Return)
     }
@@ -75,7 +75,7 @@ function DecOut (out, tk, callback) {
       isWrited = true
       sub.stdin.write(tk + '\n' + out + '\n', (err) => {
         if (err) {
-          Return(err, undefined)
+          Return(err, content)
         }
       })
     }
@@ -84,11 +84,11 @@ function DecOut (out, tk, callback) {
   sub.stderr.on('data', (data) => {
   })
   sub.on('error', (err) => {
-    Return(err, undefined)
+    Return(err, content)
   })
   sub.on('exit', (code) => {
     if (code !== 0) {
-      Return(new Error('Exit Code: ' + code), undefined)
+      Return(new Error('Exit Code: ' + code), content)
     } else {
       utils.ParseResult(content, Return)
     }
@@ -118,9 +118,9 @@ function ConfirmOutZ (out, key, callback) {
   sub.stdout.on('data', (data) => {
     if (!isWrited) {
       isWrited = true
-      sub.stdin.write ( key + '\n' + out + '\n', (err) => {
+      sub.stdin.write(key + '\n' + out + '\n', (err) => {
         if (err) {
-          Return(err, undefined)
+          Return(err, content)
         }
       })
     }
@@ -129,11 +129,11 @@ function ConfirmOutZ (out, key, callback) {
   sub.stderr.on('data', (data) => {
   })
   sub.on('error', (err) => {
-    Return(err, undefined)
+    Return(err, content)
   })
   sub.on('exit', (code) => {
     if (code !== 0) {
-      Return(new Error('Exit Code: ' + code), undefined)
+      Return(new Error('Exit Code: ' + code), content)
     } else {
       utils.ParseResult(content, Return)
     }
