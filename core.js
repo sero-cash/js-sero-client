@@ -12,6 +12,7 @@ function ReportError (msg) {
 const cVoid = ref.types.void
 const cUchar = ref.types.uchar
 const cChar = ref.types.char
+const cInt = ref.types.int32
 const cBytes = ref.refType(cUchar)
 
 function NewBytesBuffer (len) {
@@ -33,22 +34,25 @@ function InitCZero () {
     czero = ffi.Library(
       p.libczero_dir,
       {
-        'zero_init_no_circuit': [cVoid, []],
-        'zero_random32': [cVoid, [cBytes]],
-        'zero_seed2sk': [cVoid, [cBytes, cBytes]],
-        'zero_sk2tk': [cVoid, [cBytes, cBytes]],
-        'zero_tk2pk': [cVoid, [cBytes, cBytes]],
-        'zero_pk2pkr': [cVoid, [cBytes, cBytes, cBytes]],
-        'zero_pk_valid': [cChar, [cBytes]],
-        'zero_pkr_valid': [cChar, [cBytes]],
-        'zero_ismy_pkr': [cChar, [cBytes, cBytes]]
+        'superzk_init_params_no_circuit': [cVoid, []],
+        'superzk_random_fr': [cVoid, [cBytes]],
+        'superzk_seed2sk': [cVoid, [cBytes, cBytes]],
+        'superzk_sk2tk': [cInt, [cBytes, cBytes]],
+        'czero_tk2pk': [cInt, [cBytes, cBytes]],
+        'czero_pk2pkr': [cInt, [cBytes, cBytes, cBytes]],
+        'superzk_tk2pk': [cInt, [cBytes, cBytes]],
+        'superzk_pk2pkr': [cInt, [cBytes, cBytes, cBytes]],
+        'superzk_pk_valid': [cInt, [cBytes]],
+        'superzk_pkr_valid': [cInt, [cBytes]],
+        'czero_ismy_pkr': [cInt, [cBytes, cBytes]],
+        'superzk_my_pkr': [cInt, [cBytes, cBytes]]
       }
     )
     czero.p = p
-    czero.zero_init_no_circuit()
+    czero.superzk_init_params_no_circuit()
     czero.RandomU32 = function () {
       var buf = NewBytesBuffer(32)
-      czero.zero_random32(buf)
+      czero.superzk_random_fr(buf)
       return buf
     }
   } else {

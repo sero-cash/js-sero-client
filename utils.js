@@ -26,13 +26,13 @@ function OSType () {
 
 function BinPath (type) {
   let baseDir = './tools'
-  let czeroName = 'libczero.so'
+  let czeroName = 'libsuperzk.so'
   let tail = 'LINUX_AMD64_V4'
   let ldPath = 'LD_LIBRARY_PATH'
   let txName = 'tx'
   let split = ':'
   if (type.toLowerCase() === 'windows') {
-    czeroName = 'libczero.dll'
+    czeroName = 'libsuperzk.dll'
     tail = 'WINDOWS_AMD64'
     ldPath = 'PATH'
     txName = 'tx.exe'
@@ -40,7 +40,7 @@ function BinPath (type) {
   } else if (type.toLowerCase() === 'linux3') {
     tail = 'LINUX_AMD64_V3'
   } else if (type.toLowerCase() === 'darwin') {
-    czeroName = 'libczero.dylib'
+    czeroName = 'libsuperzk.dylib'
     tail = 'DARWIN_AMD64'
     ldPath = 'DYLD_LIBRARY_PATH'
   }
@@ -62,6 +62,15 @@ function AllocBuffer (len, data, dec) {
   }
   return buf
 }
+
+function FromBuffer (data) {
+  let buf = Buffer.from(data)
+  buf.ToBase58 = function () {
+    return base58.encode(buf)
+  }
+  return buf
+}
+
 function ToBuffer (str, len) {
   if (typeof (str) === 'string') {
     if (str[0] === '0' && str[1] === 'x') {
@@ -93,7 +102,7 @@ function ToBuffer (str, len) {
 }
 
 function ToHex (str, len) {
-  let buf = ToBuffer(str,len)
+  let buf = ToBuffer(str, len)
   return buf.toString('hex')
 }
 
@@ -119,21 +128,44 @@ function ParseResult (content, cb) {
       if (end <= 0) {
         cb(new Error('Can not find [OUTPUT-END]'), undefined)
       } else {
-        var data = content.substr(start, end - start)
-        cb(undefined, data)
+        var d = content.substr(start, end - start)
+        cb(undefined, d)
       }
     }
   }
 }
 
+function isSzk (buf) {
+  var hi = buf[buf.length - 1]
+  if ((hi & 0x40) !== 0x0) {
+    return true
+  } else {
+    return false
+  }
+}
 
+function setSzk (buf) {
+  var ret = FromBuffer(buf)
+  ret[ret.length - 1] |= 0x40
+  return ret
+}
+
+function clearSzk (buf) {
+  var ret = FromBuffer(buf)
+  ret[buf.length - 1] &= 0xbf
+  return ret
+}
 
 module.exports = {
   GetBinPath: () => {
     return binPath
   },
   AllocBuffer,
+  FromBuffer,
   ToBuffer,
   ToHex,
-  ParseResult
+  ParseResult,
+  isSzk,
+  setSzk,
+  clearSzk
 }
