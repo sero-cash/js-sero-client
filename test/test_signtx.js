@@ -24,7 +24,7 @@ tx.SignTx(
   keys.sk.ToBase58(),
   (err, content) => {
     if (err) {
-      console.error(err)
+      console.error(err,content)
     } else {
       console.log(content)
     }
