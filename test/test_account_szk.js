@@ -3,7 +3,7 @@
 const core = require('../core.js')
 const utils = require('../utils.js')
 const account = require('../account_szk.js')
-const pk2pkr = require('../index.js').PK2PKr
+const newKeysByPK = require('../index.js').NewKeysByPK
 
 var seedTemp = '0xec8bad429641ff7cc980a1bd4f69a57302f53b35941edf3cc459640b1ab03d1f'
 
@@ -16,7 +16,7 @@ if (!utils.isSzk(keys.pk)) {
   core.ReportError('pk error')
 }
 
-var pkr = pk2pkr(keys.pk, rnd)
+var pkr = newKeysByPK(keys.pk).GenPKr(rnd)
 
 if (!utils.isSzk(pkr)) {
   core.ReportError('pkr error')

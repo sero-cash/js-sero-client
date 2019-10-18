@@ -32,16 +32,25 @@ function NewKeys (seed, sk, tk, pk) {
 
   if (sk) {
     keys.sk = utils.ToBuffer(sk, 64)
+    if (!utils.isSzk(keys.sk)) {
+      core.ReportError('pk is not szk')
+    }
   } else if (keys.seed) {
-    keys.sk = core.NewBytesBuffer(64)
-    core.GetCZero().superzk_seed2sk(keys.seed, keys.sk)
+    var s = core.NewBytesBuffer(64)
+    core.GetCZero().superzk_seed2sk(keys.seed, s)
+    keys.sk = utils.setSzk(s)
   }
 
   if (tk) {
     keys.tk = utils.ToBuffer(tk, 64)
+    if (!utils.isSzk(keys.tk)) {
+      core.ReportError('pk is not szk')
+    }
   } else if (keys.sk) {
-    keys.tk = core.NewBytesBuffer(64)
-    core.GetCZero().superzk_sk2tk(keys.sk, keys.tk)
+    var t = core.NewBytesBuffer(64)
+    var s = utils.clearSzk(keys.sk)
+    core.GetCZero().superzk_sk2tk(s, t)
+    keys.tk = utils.setSzk(t)
   }
 
   if (pk) {
@@ -51,7 +60,8 @@ function NewKeys (seed, sk, tk, pk) {
     }
   } else if (keys.tk) {
     var p = core.NewBytesBuffer(64)
-    core.GetCZero().superzk_tk2pk(keys.tk, p)
+    var t = utils.clearSzk(keys.tk)
+    core.GetCZero().superzk_tk2pk(t, p)
     keys.pk = utils.setSzk(p)
   }
 
@@ -78,10 +88,11 @@ function NewKeys (seed, sk, tk, pk) {
   keys.IsMyPKr = function (pkr) {
     pkr = utils.ToBuffer(pkr, 96)
     if (!utils.isSzk(pkr)) {
-      core.ReportError('pkr is not szk')
+      return false
     }
     pkr = utils.clearSzk(pkr)
-    var ret = core.GetCZero().superzk_my_pkr(keys.tk, pkr)
+    var t = utils.clearSzk(keys.tk)
+    var ret = core.GetCZero().superzk_my_pkr(t, pkr)
     if (ret === 0) {
       return true
     } else {

@@ -73,7 +73,7 @@ function NewKeys (seed, sk, tk, pk) {
   keys.IsMyPKr = function (pkr) {
     pkr = utils.ToBuffer(pkr, 96)
     if (utils.isSzk(pkr)) {
-      core.ReportError('pkr is not czero')
+      return false
     }
     let ret = core.GetCZero().czero_ismy_pkr(keys.tk,pkr)
     if (ret === 0) {
