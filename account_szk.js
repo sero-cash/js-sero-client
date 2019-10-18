@@ -23,7 +23,7 @@ function NewKeys (seed, sk, tk, pk) {
     count++
   }
   if (count !== 1) {
-    core.ReportError('Can only supply one param')
+    utils.ReportError('Can only supply one param')
   }
   var keys = {}
   if (seed) {
@@ -33,7 +33,7 @@ function NewKeys (seed, sk, tk, pk) {
   if (sk) {
     keys.sk = utils.ToBuffer(sk, 64)
     if (!utils.isSzk(keys.sk)) {
-      core.ReportError('pk is not szk')
+      utils.ReportError('pk is not szk')
     }
   } else if (keys.seed) {
     var s = core.NewBytesBuffer(64)
@@ -44,7 +44,7 @@ function NewKeys (seed, sk, tk, pk) {
   if (tk) {
     keys.tk = utils.ToBuffer(tk, 64)
     if (!utils.isSzk(keys.tk)) {
-      core.ReportError('pk is not szk')
+      utils.ReportError('pk is not szk')
     }
   } else if (keys.sk) {
     var t = core.NewBytesBuffer(64)
@@ -56,7 +56,7 @@ function NewKeys (seed, sk, tk, pk) {
   if (pk) {
     keys.pk = utils.ToBuffer(pk, 64)
     if (!utils.isSzk(keys.pk)) {
-      core.ReportError('pk is not szk')
+      utils.ReportError('pk is not szk')
     }
   } else if (keys.tk) {
     var p = core.NewBytesBuffer(64)

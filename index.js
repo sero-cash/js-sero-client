@@ -4,7 +4,14 @@ const account = require('./account.js')
 const szkAccount = require('./account_szk.js')
 const tx = require('./tx.js')
 
-function NewKeysBySk (sk) {
+function newKeysBySeed (seed,version) {
+  if (version === 2) {
+    return szkAccount.NewKeys(seed)
+  } else {
+    return account.NewKeys(seed)
+  }
+}
+function newKeysBySk (sk) {
   if (utils.isSzk(sk)) {
     return szkAccount.NewKeys(undefined, sk)
   } else {
@@ -12,7 +19,7 @@ function NewKeysBySk (sk) {
   }
 }
 
-function NewKeysByTk (tk) {
+function newKeysByTk (tk) {
   if (utils.isSzk(tk)) {
     return szkAccount.NewKeys(undefined, undefined, tk)
   } else {
@@ -20,7 +27,7 @@ function NewKeysByTk (tk) {
   }
 }
 
-function NewKeysByPK (pk) {
+function newKeysByPK (pk) {
   if (utils.isSzk(pk)) {
     return szkAccount.NewKeys(undefined, undefined, undefined, pk)
   } else {
@@ -30,11 +37,13 @@ function NewKeysByPK (pk) {
 
 module.exports = {
   Utils: utils,
+  Core: core,
   Czero: core.GetCZero(),
   Account: account,
   SzkAccount: szkAccount,
-  NewKeysBySk,
-  NewKeysByTk,
-  NewKeysByPK,
+  newKeysBySeed,
+  newKeysBySk,
+  newKeysByTk,
+  newKeysByPK,
   Tx: tx
 }

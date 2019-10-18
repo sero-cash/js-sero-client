@@ -3,6 +3,11 @@ const path = require('path')
 const os = require('os')
 const base58 = require('bs58')
 
+function ReportError (msg) {
+  throw new Error(msg || 'Assertion failed')
+}
+
+
 function OSType () {
   let ot
   let pf = os.platform()
@@ -106,10 +111,6 @@ function ToHex (str, len) {
   return buf.toString('hex')
 }
 
-function ReportError (msg) {
-  throw new Error(msg || 'Assertion failed')
-}
-
 const OUTPUT_BEGIN = '[OUTPUT-BEGIN]'
 const OUTPUT_ERROR = 'ERROR:'
 
@@ -167,5 +168,6 @@ module.exports = {
   ParseResult,
   isSzk,
   setSzk,
-  clearSzk
+  clearSzk,
+  ReportError
 }

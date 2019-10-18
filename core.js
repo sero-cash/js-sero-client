@@ -5,10 +5,6 @@ const ref = require('ref')
 const utils = require('./utils.js')
 const base58 = require('bs58')
 
-function ReportError (msg) {
-  throw new Error(msg || 'Assertion failed')
-}
-
 const cVoid = ref.types.void
 const cUchar = ref.types.uchar
 const cChar = ref.types.char
@@ -70,6 +66,5 @@ function GetCZero () {
 module.exports = {
   GetCZero,
   NewBytesBuffer,
-  NewBytesBufferFromBase58,
-  ReportError
+  NewBytesBufferFromBase58
 }

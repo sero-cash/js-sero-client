@@ -23,7 +23,7 @@ function NewKeys (seed, sk, tk, pk) {
     count++
   }
   if (count !== 1) {
-    core.ReportError('Can only supply one param')
+    utils.ReportError('Can only supply one param')
   }
   var keys = {}
   if (seed) {
@@ -47,7 +47,7 @@ function NewKeys (seed, sk, tk, pk) {
   if (pk) {
     keys.pk = utils.ToBuffer(pk, 64)
     if (utils.isSzk(pk)) {
-      core.ReportError('pk is not czero')
+      utils.ReportError('pk is not czero')
     }
   } else if (keys.tk) {
     keys.pk = core.NewBytesBuffer(64)
