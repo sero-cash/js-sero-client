@@ -1,6 +1,6 @@
 {
   "name": "js-sero-client",
-  "version": "1.0.1",
+  "version": "1.0.1-rc5",
   "description": "Utilities for handling SERO client",
   "main": "index.js",
   "files": [
